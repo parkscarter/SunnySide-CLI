@@ -72,6 +72,9 @@ type WeatherAlert struct {
 	Tags        []string `json:"tags"`
 }
 
+/*
+This function takes an int value between 0 and 359 (Degrees) and converts it to a cardinal direction- returns string
+*/
 func getWindDir(degrees float64) string {
 	cardinalDirections := []string{"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"}
 
@@ -85,6 +88,9 @@ func getWindDir(degrees float64) string {
 	return cardinalDirections[index]
 }
 
+/*
+This function takes an int on a scale of 0-100 and converts it to a string representing cloud coverage
+*/
 func getCloudCoverage(percentage int) string {
 	switch {
 	case percentage <= 10:
@@ -190,6 +196,10 @@ func getCoordinatesByZip(zipCode string) {
 	return
 }
 
+/*
+This function asks the user to input a zip code, checks its length and if it contains only numbers, then calls getCoordinatesByZip()
+If the user inputs an invalid zip code, the function prompts the user to input a valid zip code
+*/
 func takeZipInput() {
 	var input string
 	fmt.Print("\n\n\n\nEnter 'q' to quit or 'b' to go back\n\n")
@@ -224,6 +234,10 @@ func takeZipInput() {
 	return
 }
 
+/*
+This function takes input of a country code, state code, and city; and makes an http request
+to obtain the coordinates of the city. Then passes the coordinates into the getWeather Function
+*/
 func getCoordinatesByCity(city string, state string, country string) {
 	apiURL := fmt.Sprintf("http://api.openweathermap.org/geo/1.0/direct?q=%s,%s,%s&limit=1&appid=%s", city, state, country, weatherAPIKey)
 
@@ -261,13 +275,17 @@ func getCoordinatesByCity(city string, state string, country string) {
 	return
 }
 
+/*
+Similarly to takeZipInput() this function prompts the user to enter a country code, state code, and city name
+The function will prompt the user to give valid inputs if any input contains a numerical value
+*/
 func takeCityInput() {
 	var countryInput string
 	var stateInput string
 	var cityInput string
 
 	fmt.Print("\n\n\n\nEnter 'q' to quit or 'b' to go back\n\n")
-	fmt.Printf("Enter a country code (ex. US):\n")
+	fmt.Printf("First, enter a country code (ex. US):\n")
 
 	for {
 		_, err := fmt.Scan(&countryInput)
@@ -295,7 +313,7 @@ func takeCityInput() {
 	}
 
 	fmt.Print("\n\n\n\nEnter 'q' to quit or 'b' to go back\n\n")
-	fmt.Printf("Enter a state code (ex: IA):\n")
+	fmt.Printf("Next, enter a state code (ex: IA):\n")
 
 	for {
 		_, err := fmt.Scan(&stateInput)
@@ -323,7 +341,7 @@ func takeCityInput() {
 	}
 
 	fmt.Print("\n\n\n\nEnter 'q' to quit or 'b' to go back\n\n")
-	fmt.Printf("Enter the name of a city (ex. Oskaloosa):\n")
+	fmt.Printf("Lastly, enter the name of a city (ex. Oskaloosa):\n")
 
 	for {
 		_, err := fmt.Scan(&cityInput)
@@ -356,8 +374,8 @@ func takeCityInput() {
 func main() {
 	var input string
 	fmt.Printf("\n\n\n\n_______________________________________________________________________________\n\n")
-	fmt.Printf("Hello and welcome to SunnySide Weather! This interactive CLI was built as practice;\nhowever it still has some neat functionality to explore; most importantly, \nthis program will return the current weather at a location specified by the user\n\n")
-	fmt.Printf("Enter 'z' to search by zipcode, 'l' to search by city name, or 'q' to quit\n")
+	fmt.Printf("Hello, Welcome to SunnySide Weather! This interactive CLI was built as practice\nHave fun checking the current weather at any location around the world!\n\n")
+	fmt.Printf("Enter 'z' to search by zipcode, 'c' to search by city name, or 'q' to quit\n")
 	for {
 		_, err := fmt.Scan(&input)
 		if err != nil {
@@ -366,10 +384,10 @@ func main() {
 			return
 		} else if input == "z" {
 			takeZipInput()
-		} else if input == "l" {
+		} else if input == "c" {
 			takeCityInput()
 		}
-		fmt.Printf("\n\nEnter 'z' to search by zipcode, 'l' to search by city name, or 'q' to quit\n")
+		fmt.Printf("\n\nEnter 'z' to search by zipcode, 'c' to search by city name, or 'q' to quit\n")
 	}
 
 }
